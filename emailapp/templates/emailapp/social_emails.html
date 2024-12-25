@@ -1,0 +1,50 @@
+{% extends 'emailapp/base.html' %}
+
+{% block title %}Social Emails - Email Classification{% endblock %}
+
+{% block content %}
+    <h2>Social Emails</h2>
+
+    <!-- Sorting buttons -->
+    <div>
+        <button onclick="sortEmails('subject')">Sort by Subject</button>
+        <button onclick="sortEmails('category')">Sort by Category</button>
+    </div>
+
+    <div id="email-list">
+        {% for email in emails %}
+            <div class="email-box" data-subject="{{ email.subject }}" data-category="{{ email.classification }}">
+                <h3>{{ email.subject }}</h3>
+                <p><strong>From:</strong> {{ email.sender }}</p>
+                <details>
+                    <summary>View Details</summary>
+                    <p>{{ email.body | safe }}</p>
+                </details>
+                <p><strong>Category:</strong> <span class="category">{{ email.classification }}</span></p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function sortEmails(criteria) {
+            console.log("Sorting by:", criteria);
+            let emailList = document.getElementById('email-list');
+            let emails = Array.from(emailList.querySelectorAll('.email-box'));
+
+            console.log("Emails before sorting:", emails);
+
+            emails.sort((a, b) => {
+                let textA = a.getAttribute('data-' + criteria).toLowerCase();
+                let textB = b.getAttribute('data-' + criteria).toLowerCase();
+
+                console.log("Comparing:", textA, textB);
+                return textA.localeCompare(textB);
+            });
+
+            emailList.innerHTML = '';
+            emails.forEach(email => emailList.appendChild(email));
+
+            console.log("Emails after sorting:", emails);
+        }
+    </script>
+{% endblock %}

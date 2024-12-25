@@ -1,0 +1,1 @@
+web: gunicorn --timeout 480 email_classification.wsgi:application

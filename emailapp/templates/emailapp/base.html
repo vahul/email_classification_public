@@ -1,0 +1,489 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Email Classification{% endblock %}</title>
+        <style>
+            @media (max-width: 600px) {
+                #email-list {
+                    flex-direction: column;
+                    padding: 10px;
+                }
+                .email-box {
+                    padding: 15px;
+                }
+            }
+                @media (max-width: 500px) {
+    nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav a {
+        width: 100%;
+        text-align: center;
+        padding: 12px 0;
+        margin: 5px 0;
+    }
+
+    .email-box {
+        padding: 10px;
+        width: 95%;
+    }
+
+    #email-list {
+        padding: 0;
+    }
+
+    .email-item {
+        padding: 10px;
+    }
+}
+
+            .email-box:hover {
+                background-color: #f0f8ff;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-image: url("https://img.freepik.com/free-photo/vintage-wallpaper-background_53876-25244.jpg?t=st=1733110114~exp=1733113714~hmac=468e314e4566ca0b8040cc15253410fc91ae6222d6c692bd16c4cc58c8226e6a&w=1060");
+                background-size: cover; /* Ensures the image covers the entire body */
+                background-position: center; /* Centers the background image */
+                background-repeat: no-repeat; /* Prevents repeating the image */
+            }
+
+            #email-list {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            button {
+                margin: 10px;
+                padding: 10px 15px;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+
+            .email-box {
+                background-color: rgba(249, 249, 249, 0.9); /* Slight transparency for better readability */
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .email-box h3 {
+                margin: 0 0 10px;
+                font-size: 1.25rem;
+            }
+
+            .email-box p strong {
+                font-weight: bold;
+            }
+
+            .email-box .category {
+                color: #007bff;
+            }
+
+            header {
+                padding: 10px 0;
+                text-align: center;
+                color: white;
+            }
+
+            h1 {
+                margin: 0;
+            }
+
+            nav {
+                text-align: center;
+                background-color: #333;
+            }
+
+            nav a {
+                  font-weight: 100;
+      letter-spacing: 4px;
+                color: white;
+                padding: 10px 20px;
+                text-decoration: none;
+                display: inline-block;
+                  height: 50px;
+      width: 180px;
+      position: relative;
+      background-color: transparent;
+      cursor: pointer;
+      border: 2px solid #252525;
+      overflow: hidden;
+      border-radius: 30px;
+            }
+
+
+            nav a:hover {
+      box-shadow: 1px 1px 200px #252525;
+      color: #fff;
+      border: none;
+
+            }
+
+
+    #wifi-loader {
+      --background: #62abff;
+      --front-color: #4f29f0;
+      --back-color: #c3c8de;
+      --text-color: #414856;
+      width: 64px;
+      height: 64px;
+      border-radius: 50px;
+      position: fixed; /* Use fixed position to keep it centered even during scrolling */
+      top: 50%; /* Center vertically */
+      left: 50%; /* Center horizontally */
+      transform: translate(-50%, -50%); /* Adjust to precisely center it */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999; /* Ensure it stays on top */
+    }
+
+    /* Circle styles */
+    #wifi-loader svg {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #wifi-loader svg circle {
+      position: absolute;
+      fill: none;
+      stroke-width: 6px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transform: rotate(-100deg);
+      transform-origin: center;
+    }
+
+    #wifi-loader svg circle.back {
+      stroke: var(--back-color);
+    }
+
+    #wifi-loader svg circle.front {
+      stroke: var(--front-color);
+    }
+
+    #wifi-loader svg.circle-outer {
+      height: 86px;
+      width: 86px;
+    }
+
+    #wifi-loader svg.circle-outer circle {
+      stroke-dasharray: 62.75 188.25;
+    }
+
+    #wifi-loader svg.circle-outer circle.back {
+      animation: circle-outer135 1.8s ease infinite 0.3s;
+    }
+
+    #wifi-loader svg.circle-outer circle.front {
+      animation: circle-outer135 1.8s ease infinite 0.15s;
+    }
+
+    #wifi-loader svg.circle-middle {
+      height: 60px;
+      width: 60px;
+    }
+
+    #wifi-loader svg.circle-middle circle {
+      stroke-dasharray: 42.5 127.5;
+    }
+
+    #wifi-loader svg.circle-middle circle.back {
+      animation: circle-middle6123 1.8s ease infinite 0.25s;
+    }
+
+    #wifi-loader svg.circle-middle circle.front {
+      animation: circle-middle6123 1.8s ease infinite 0.1s;
+    }
+
+    #wifi-loader svg.circle-inner {
+      height: 34px;
+      width: 34px;
+    }
+
+    #wifi-loader svg.circle-inner circle {
+      stroke-dasharray: 22 66;
+    }
+
+    #wifi-loader svg.circle-inner circle.back {
+      animation: circle-inner162 1.8s ease infinite 0.2s;
+    }
+
+    #wifi-loader svg.circle-inner circle.front {
+      animation: circle-inner162 1.8s ease infinite 0.05s;
+    }
+
+    #wifi-loader .text {
+      position: absolute;
+      bottom: -40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-transform: lowercase;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    #wifi-loader .text::before, #wifi-loader .text::after {
+      content: attr(data-text);
+    }
+
+    #wifi-loader .text::before {
+      color: var(--text-color);
+    }
+
+    #wifi-loader .text::after {
+      color: var(--front-color);
+      animation: text-animation76 3.6s ease infinite;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Animations */
+    @keyframes circle-outer135 {
+      0% {
+        stroke-dashoffset: 25;
+      }
+
+      25% {
+        stroke-dashoffset: 0;
+      }
+
+      65% {
+        stroke-dashoffset: 301;
+      }
+
+      80% {
+        stroke-dashoffset: 276;
+      }
+
+      100% {
+        stroke-dashoffset: 276;
+      }
+    }
+
+    @keyframes circle-middle6123 {
+      0% {
+        stroke-dashoffset: 17;
+      }
+
+      25% {
+        stroke-dashoffset: 0;
+      }
+
+      65% {
+        stroke-dashoffset: 204;
+      }
+
+      80% {
+        stroke-dashoffset: 187;
+      }
+
+      100% {
+        stroke-dashoffset: 187;
+      }
+    }
+
+    @keyframes circle-inner162 {
+      0% {
+        stroke-dashoffset: 9;
+      }
+
+      25% {
+        stroke-dashoffset: 0;
+      }
+
+      65% {
+        stroke-dashoffset: 106;
+      }
+
+      80% {
+        stroke-dashoffset: 97;
+      }
+
+      100% {
+        stroke-dashoffset: 97;
+      }
+    }
+
+    @keyframes text-animation76 {
+      0% {
+        clip-path: inset(0 100% 0 0);
+      }
+
+      50% {
+        clip-path: inset(0);
+      }
+
+      100% {
+        clip-path: inset(0 0 0 100%);
+      }
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    $primary: hsl(260, 100%, 80%);
+
+    html,
+    body {
+        height: 100vh;
+        width: 100vw;
+    }
+
+    body {
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background-color: #222;
+        font-family: system-ui, sans-serif;
+    }
+
+    nav,
+    .nav-item {
+        display: flex;
+    }
+
+    nav {
+        border-radius: 6px;
+        background-image: linear-gradient(
+                rgb(48, 48, 48) 13%,
+                rgb(30, 30, 30) 40%,
+                #0c0d11 86%
+        );
+        color: rgba(255, 255, 255, 0.6);
+        text-shadow: 0 -2px 0 black;
+        cursor: pointer;
+        box-shadow: 1px 2px 4px rgb(20, 20, 20), 0 4px 12px rgb(10, 10, 10);
+    }
+
+    /* From Uiverse.io by Gaurav-WebDev */
+    .button, {
+      height: 50px;
+      width: 200px;
+      position: relative;
+      background-color: transparent;
+      cursor: pointer;
+      border: 2px solid #252525;
+      overflow: hidden;
+      border-radius: 30px;
+      color: white;
+      transition: all 0.5s ease-in-out;
+    }
+
+    .btn-txt {
+      z-index: 1;
+      font-weight: 800;
+      letter-spacing: 4px;
+    }
+
+    .type1::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      transition: all 0.5s ease-in-out;
+      background-color: #333;
+      border-radius: 30px;
+      visibility: hidden;
+      height: 10px;
+      width: 10px;
+      z-index: -1;
+    }
+
+    .button:hover {
+      box-shadow: 1px 1px 200px #252525;
+      color: #fff;
+      border: none;
+    }
+
+    .type1:hover::after {
+      visibility: visible;
+      transform: scale(100) translateX(2px);
+    }
+      .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination a, .pagination span {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+        .pagination a:hover {
+            background-color: #f0f0f0;
+        }
+        .current-page {
+            font-weight: bold;
+            background-color: #ddd;
+        }
+        </style>
+    </head>
+    <body>
+     <div id="wifi-loader">
+        <svg class="circle-outer" viewBox="0 0 86 86">
+            <circle class="back" cx="43" cy="43" r="40"></circle>
+            <circle class="front" cx="43" cy="43" r="40"></circle>
+            <circle class="new" cx="43" cy="43" r="40"></circle>
+        </svg>
+        <svg class="circle-middle" viewBox="0 0 60 60">
+            <circle class="back" cx="30" cy="30" r="27"></circle>
+            <circle class="front" cx="30" cy="30" r="27"></circle>
+        </svg>
+        <svg class="circle-inner" viewBox="0 0 34 34">
+            <circle class="back" cx="17" cy="17" r="14"></circle>
+            <circle class="front" cx="17" cy="17" r="14"></circle>
+        </svg>
+        <div class="text" data-text="Searching"></div>
+    </div>
+    <br>
+     <br>
+    <div class="navigation">
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'allmails' %}">All Mails</a>
+            <a href="{% url 'oracle_emails' %}">ORACLE</a>
+            <a href="{% url 'finance_emails' %}">Finance</a>
+            <a href="{% url 'social_emails' %}">Social</a>
+            <a href="{% url 'news_emails' %}">News</a>
+            <a href="{% url 'health_emails' %}">Health</a>
+            <a href="{% url 'promotions_emails' %}">Promotions</a>
+            <a href="{% url 'job_emails' %}">Job Offers</a>
+        </nav>
+    </div>
+        <div>
+
+            {% block content %}{% endblock %}
+        </div>
+     <script>
+            // Show loader when navigating to a new page
+            window.addEventListener('beforeunload', function() {
+                document.getElementById('wifi-loader').style.display = 'flex'; // Show loader
+            });
+
+            // Hide loader once the page is fully loaded
+            window.addEventListener('load', function() {
+                document.getElementById('wifi-loader').style.display = 'none'; // Hide loader
+            });
+        </script>
+    </body>
+    </html>

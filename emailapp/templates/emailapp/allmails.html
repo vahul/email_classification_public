@@ -1,0 +1,76 @@
+{% extends 'emailapp/base.html' %}
+
+{% block title %}All Mails - Email Classification{% endblock %}
+
+{% block content %}
+    <h2>All Classified Emails</h2>
+
+    <!-- Date picker for selecting date -->
+    <div>
+        <form method="get" action="{% url 'allmails' %}">
+            <label for="start_date">Select Start Date:</label>
+            <input type="date" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+            <label for="end_date">Select End Date:</label>
+            <input type="date" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+            <button type="submit">Retrieve Emails</button>
+        </form>
+    </div>
+
+    <!-- Sorting buttons -->
+    <div>
+        <button onclick="sortEmails('subject')">Sort by Subject</button>
+        <button onclick="sortEmails('category')">Sort by Category</button>
+    </div>
+
+    <!-- Display email list -->
+    <div id="email-list">
+        {% if emails %}
+            {% for email in emails %}
+                <div class="email-box" data-subject="{{ email.subject }}" data-category="{{ email.classification }}">
+                    <h3>{{ email.subject }}</h3>
+                    <p><strong>From:</strong> {{ email.sender }}</p>
+                    <details>
+                        <summary>View Details</summary>
+                        <p>{{ email.body | safe }}</p>
+                    </details>
+                    <p><strong>Category:</strong> <span class="category">{{ email.classification }}</span></p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No emails found for the selected date.</p>
+        {% endif %}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        {% if emails.has_previous %}
+            <a href="?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}&page=1">&laquo; First</a>
+            <a href="?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}&page={{ emails.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ emails.number }} of {{ emails.paginator.num_pages }}</span>
+
+        {% if emails.has_next %}
+            <a href="?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}&page={{ emails.next_page_number }}">Next</a>
+            <a href="?start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}&page={{ emails.paginator.num_pages }}">Last &raquo;</a>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+<!-- JavaScript for sorting emails -->
+<script>
+    function sortEmails(criteria) {
+        let emailList = document.getElementById('email-list');
+        let emails = Array.from(emailList.querySelectorAll('.email-box'));
+
+        emails.sort((a, b) => {
+            let textA = a.getAttribute('data-' + criteria).toLowerCase();
+            let textB = b.getAttribute('data-' + criteria).toLowerCase();
+            return textA.localeCompare(textB);
+        });
+
+        emailList.innerHTML = '';
+        emails.forEach(email => emailList.appendChild(email));
+    }
+</script>

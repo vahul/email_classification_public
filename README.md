@@ -1,1 +1,1 @@
-# email_classification_public
+# email_classification
